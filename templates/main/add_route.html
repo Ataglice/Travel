@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Добавить маршрут
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="mb-4">Добавить маршрут</h2>
+    
+    <!-- Форма добавления маршрута -->
+    <form method="post" class="shadow p-4 bg-light rounded">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_name" class="form-label">Название маршрута</label>
+            {{ form.name }}
+        </div>
+        <div class="mb-3">
+            <label for="id_description" class="form-label">Описание маршрута</label>
+            {{ form.description }}
+        </div>
+        <div class="d-flex justify-content-between mt-3">
+            <button type="submit" class="btn btn-success">Создать маршрут</button>
+            <a href="{% url 'route_list' %}" class="btn btn-outline-secondary">Вернуться к путешествиям</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

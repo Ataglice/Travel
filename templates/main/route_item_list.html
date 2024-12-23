@@ -1,0 +1,50 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Пункты маршрута
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="mb-4">Пункты для маршрута "{{ route.name }}"</h2>
+
+    <!-- Кнопка добавления пункта -->
+    <div class="mb-3">
+        <a href="{% url 'add_route_item' route_id=route.id %}" class="btn btn-dark">
+            Добавить пункт
+        </a>
+        <a href="{% url 'route_list' %}" class="btn btn-outline-secondary ms-2">
+            Вернуться к маршрутам
+        </a>
+    </div>
+
+    <!-- Список пунктов -->
+    {% if items %}
+        <ul class="list-group">
+            {% for item in items %}
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div>
+                        <h5 class="mb-1">{{ item.title }}</h5>
+                        <p class="mb-0 text-muted">{{ item.description }}</p>
+                        <p class="mb-0 text-muted">{{ item.date }}</p>
+                        <p>(Цена: {{ item.price|floatformat:2|default:"Не указана" }} тнг.)</p>
+                    </div>
+                    <div>
+                        <a href="{% url 'edit_route_item' item_id=item.id %}" class="btn btn-sm btn-outline-primary">
+                            Редактировать
+                        </a>
+                        <a href="{% url 'delete_route_item' item_id=item.id %}" class="btn btn-sm btn-outline-danger">
+                            Удалить
+                        </a>
+                    </div>
+                </li>
+                
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            Пунктов пока нет.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

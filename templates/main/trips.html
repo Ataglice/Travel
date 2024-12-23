@@ -1,6 +1,81 @@
 {% extends 'main/base.html' %}
 
-{% block title  %}
-Активные и завершённые путешествия
+{% block title %}
+Путешествия
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Создать новое путешествие</h1>
+    
+    <!-- Форма создания путешествия -->
+    <form method="post" class="shadow p-4 bg-light rounded">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="trip-name" class="form-label">Название поездки</label>
+            <input type="text" name="name" id="trip-name" class="form-control" placeholder="Введите название" required>
+        </div>
+        <div class="mb-3">
+            <label for="start-date" class="form-label">Дата начала</label>
+            <input type="date" name="start_date" id="start-date" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="end-date" class="form-label">Дата окончания</label>
+            <input type="date" name="end_date" id="end-date" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="destination" class="form-label">Место назначения</label>
+            <input type="text" name="destination" id="destination" class="form-control" placeholder="Введите место назначения" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Создать</button>
+    </form>
+
+    <hr class="my-5">
+
+    <!-- Список путешествий -->
+    <h2 class="mb-4">Ваши путешествия</h2>
+    {% if trips %}
+        <ul class="list-group">
+            {% for trip in trips %}
+            <li class="list-group-item shadow-sm p-4 rounded mb-3">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h4 class="mb-1">{{ trip.name }}</h4>
+                        <p class="mb-1 text-muted">Дата: {{ trip.start_date }} – {{ trip.end_date }}</p>
+                        <p class="mb-1 text-muted">Место назначения: {{ trip.destination }}</p>
+                        <p class="mb-1 text-muted">Создатель: {{ trip.created_by.username }}</p>
+                    </div>
+                    <div class="text-end">
+                        <p class="mb-1">
+                            <strong>Код приглашения:</strong> 
+                            <span class="badge bg-secondary">{{ trip.invite_code }}</span>
+                        </p>
+                        <input type="text" id="invite-link-{{ trip.id }}" value="{{ trip.invite_link }}" readonly style="position: absolute; left: -9999px;">
+                        <button class="btn btn-outline-secondary btn-sm mb-2" onclick="copyToClipboard('{{ trip.id }}')">Копировать ссылку</button>
+                        {% if trip.created_by == request.user %}
+                            <form method="POST" action="{% url 'delete_trip' trip.id %}" class="mt-2">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm w-100">Удалить</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">У вас пока нет путешествий.</p>
+    {% endif %}
+</div>
+
+<script>
+    function copyToClipboard(tripId) {
+        const input = document.getElementById(`invite-link-${tripId}`);
+        input.select();
+        input.setSelectionRange(0, 99999); // Для мобильных устройств
+        document.execCommand("copy");
+        alert("Ссылка скопирована!");
+    }
+</script>
 {% endblock %}
 

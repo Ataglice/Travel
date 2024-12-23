@@ -1,0 +1,21 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Выберите путешествие
+{% endblock %}
+
+{% block content %}
+<h2>Ваши путешествия</h2>
+<ul>
+    {% for trip in trips %}
+        <li>
+            {{ trip.name }}
+            <a href="{% url 'route_list' trip_id=trip.id %}" class="btn btn-info">Посмотреть маршруты</a>
+            <a href="{% url 'add_route' trip_id=trip.id %}" class="btn btn-primary">Добавить маршрут</a>
+        </li>
+    {% empty %}
+        <li>У вас пока нет путешествий.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'create_trip' %}" class="btn btn-success">Добавить путешествие</a>
+{% endblock %}

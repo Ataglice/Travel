@@ -1,22 +1,19 @@
 {% extends 'main/base.html' %}
 
-{% block title  %}
+{% block title %}
 Задачи
 {% endblock %}
+
 {% block content %}
     {% if tasks %}
         {% for el in tasks %}
             <div class="alert alert-warning mt-2">
-                <h3>{{ el.title }}
-                </h3>
+                <h3>{{ el.title }}</h3>
                 <p>{{ el.descript }}</p>
+                <p>Назначено: {{ el.assigned_to.username|default:"Не назначено" }}</p>
             </div>
         {% endfor %}
     {% else %}
         <p>У нас нет записей</p>
     {% endif %}
 {% endblock %}
-{% block content %}
-    <h1>Создать задание</h1>
-{% endblock %}
-

@@ -1,0 +1,23 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Добавить пункт
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="mb-4">Добавить пункт для маршрута "{{ route.name }}"</h2>
+    
+    <!-- Форма добавления пункта -->
+    <form method="post" class="shadow p-4 bg-light rounded">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="d-flex justify-content-between mt-3">
+            <button type="submit" class="btn btn-dark">Создать</button>
+            <a href="{% url 'route_item_list' route_id=route.id %}" class="btn btn-outline-secondary">
+                Вернуться к пунктам маршрута
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

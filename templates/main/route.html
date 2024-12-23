@@ -1,6 +1,21 @@
 {% extends 'main/base.html' %}
 
-{% block title  %}
-Маршрут
-{% endblock %}
+{% block title %}Маршруты{% endblock %}
 
+{% block content %}
+<h2>Маршруты для "{{ trip.name }}"</h2>
+
+{% if routes %}
+    <ul>
+        {% for route in routes %}
+            <li>
+                {{ route.name }}
+                {% if route.approved %} (Одобрен) {% endif %}
+                <a href="{% url 'route_item_list' route_id=route.id %}" class="btn btn-info">Посмотреть пункты маршрута</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Маршрутов пока нет. <a href="{% url 'add_route' trip_id=trip.id %}" class="btn btn-primary">Создать маршрут</a></p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Редактировать пункт
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="mb-4">Редактировать пункт "{{ item.title }}"</h2>
+    
+    <!-- Форма редактирования пункта -->
+    <form method="post" class="shadow p-4 bg-light rounded">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="d-flex justify-content-between mt-3">
+            <button type="submit" class="btn btn-dark">Сохранить</button>
+            <a href="{% url 'route_item_list' route_id=item.route.id %}" class="btn btn-outline-secondary">
+                Отмена
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}
